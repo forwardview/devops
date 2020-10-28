@@ -6,7 +6,7 @@ LABEL maintainer="sasha klepikov <kai@list.ru>"
 
 # Install common packages
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends apt-utils lsb-release curl gnupg2 software-properties-common apt-transport-https ca-certificates locales locales-all
+    && apt-get install -y --no-install-recommends apt-utils lsb-release curl gnupg2 software-properties-common apt-transport-https ca-certificates locales locales-all git
 
 ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE 1
 ENV LC_ALL en_GB.UTF-8
@@ -31,3 +31,9 @@ RUN curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add 
     && echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list \
     && apt-get update \
     && apt-get -y --no-install-recommends install kubectl
+
+# Install Docker
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
+    && add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" \
+    && apt-get update \
+    && apt-get -y --no-install-recommends install docker-ce docker-ce-cli containerd.io
