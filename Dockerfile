@@ -1,4 +1,4 @@
-FROM debian:10.6
+FROM debian:10.8
 
 ARG DEBIAN_FRONTEND=noninteractive
 
