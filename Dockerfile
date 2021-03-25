@@ -39,4 +39,5 @@ RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
     && apt-get -y --no-install-recommends install docker-ce docker-ce-cli containerd.io
 
 # Install Helm
-RUN curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+RUN curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash \
+    && helm plugin install https://github.com/jkroepke/helm-secrets
