@@ -1,8 +1,8 @@
-FROM debian:10.10
+FROM debian:11.1-slim
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-LABEL maintainer="sasha klepikov <kai@list.ru>"
+LABEL maintainer="Sasha Klepikov <kai@list.ru>"
 
 # Install common packages
 RUN apt-get update \
@@ -41,3 +41,7 @@ RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
 # Install Helm
 RUN curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash \
     && helm plugin install https://github.com/jkroepke/helm-secrets
+
+# Install sops
+RUN curl -L https://github.com/mozilla/sops/releases/download/v3.7.1/sops_3.7.1_amd64.deb -o sops_3.7.1_amd64.deb \
+    && dpkg -i sops_3.7.1_amd64.deb
