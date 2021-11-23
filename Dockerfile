@@ -34,7 +34,7 @@ RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
     && apt-get update \
     && apt-get -y --no-install-recommends install docker-ce docker-ce-cli containerd.io
 
-# Install kubectl
+# kubectl
 RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg \
     && echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list \
     && apt-get update \
@@ -63,5 +63,5 @@ RUN curl https://baltocdn.com/helm/signing.asc | apt-key add - \
     && apt-get update \
     && apt-get install --yes --no-install-recommends helm
 
-# Helm Secrets plugin
+# helm-secrets plugin
 RUN helm plugin install https://github.com/jkroepke/helm-secrets
