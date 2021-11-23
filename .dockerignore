@@ -2,3 +2,4 @@
 /.idea
 /.dockerignore
 /.gitignore
+/Dockerfile
