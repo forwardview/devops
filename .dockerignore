@@ -1,5 +1,7 @@
 /.git
 /.idea
+/.github
 /.dockerignore
 /.gitignore
 /Dockerfile
+/README.md
