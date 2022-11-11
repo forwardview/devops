@@ -26,7 +26,7 @@ RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - \
 RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list \
     && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add - \
     && apt-get update \
-    && apt-get --yes --no-install-recommends install google-cloud-sdk
+    && apt-get --yes --no-install-recommends install google-cloud-sdk google-cloud-sdk-gke-gcloud-auth-plugin
 
 # Docker
 RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
