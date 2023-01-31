@@ -41,10 +41,10 @@ RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packa
     && apt-get install --yes --no-install-recommends kubectl
 
 # k9s
-RUN curl --location --output k9s_Linux_x86_64.tar.gz `curl -s https://api.github.com/repos/derailed/k9s/releases/latest | grep "browser_download_url.*k9s_Linux_x86_64.tar.gz" | cut -d : -f 2,3 | tr -d \"` \
+RUN curl --location --output k9s_Linux_amd64.tar.gz `curl -s https://api.github.com/repos/derailed/k9s/releases/latest | grep "browser_download_url.*k9s_Linux_amd64.tar.gz" | cut -d : -f 2,3 | tr -d \"` \
     && mkdir /tmp/k9s \
-    && tar xzf k9s_Linux_x86_64.tar.gz -C /tmp/k9s \
-    && rm k9s_Linux_x86_64.tar.gz \
+    && tar xzf k9s_Linux_amd64.tar.gz -C /tmp/k9s \
+    && rm k9s_Linux_amd64.tar.gz \
     && mv /tmp/k9s/k9s /usr/local/bin
 
 # kubectx
