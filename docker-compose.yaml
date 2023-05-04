@@ -1,0 +1,8 @@
+services:
+  devops:
+    build:
+      context: .
+    tty: true
+    stdin_open: true
+    volumes:
+      - ~/.config/gcloud:/root/.config/gcloud

@@ -8,7 +8,17 @@ WORKDIR /opt
 
 # Common packages
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends apt-utils lsb-release curl gnupg2 software-properties-common apt-transport-https ca-certificates locales locales-all git
+    && apt-get install -y --no-install-recommends apt-utils \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    git \
+    gnupg2 \
+    locales \
+    locales-all \
+    lsb-release \
+    software-properties-common \
+    vim
 
 ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE 1
 ENV LC_ALL en_GB.UTF-8
@@ -17,7 +27,7 @@ ENV LANGUAGE en_GB.UTF-8
 
 # Terraform
 RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - \
-    && apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
+    && apt-add-repository "deb [arch=$(dpkg --print-architecture)] https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
     && apt-get update \
     && apt-get --yes --no-install-recommends install terraform \
     && terraform -install-autocomplete
@@ -30,7 +40,7 @@ RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.
 
 # Docker
 RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - \
-    && add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" \
+    && add-apt-repository "deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/debian $(lsb_release -cs) stable" \
     && apt-get update \
     && apt-get -y --no-install-recommends install docker-ce docker-ce-cli containerd.io
 
@@ -53,15 +63,16 @@ RUN git clone https://github.com/ahmetb/kubectx /usr/local/src/kubectx \
     && ln -s /usr/local/src/kubectx/kubens /usr/local/bin/kubens
 
 # sops
-RUN curl --location --output sops_amd64.deb `curl -s https://api.github.com/repos/mozilla/sops/releases/latest | grep "browser_download_url.*amd64.deb" | cut -d : -f 2,3 | tr -d \"` \
-    && apt-get install --yes --no-install-recommends ./sops_amd64.deb \
-    && rm sops_amd64.deb
+RUN curl --location --output sops_$(dpkg --print-architecture).deb `curl -s https://api.github.com/repos/mozilla/sops/releases/latest | grep "browser_download_url.*$(dpkg --print-architecture).deb" | cut -d : -f 2,3 | tr -d \"` \
+    && apt-get install --yes --no-install-recommends ./sops_$(dpkg --print-architecture).deb \
+    && rm sops_$(dpkg --print-architecture).deb
 
 # Helm
-RUN curl https://baltocdn.com/helm/signing.asc | apt-key add - \
-    && echo "deb https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list \
+RUN curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null \
+    && apt-get install apt-transport-https --yes \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list \
     && apt-get update \
-    && apt-get install --yes --no-install-recommends helm
+    && apt-get install helm
 
 # helm-secrets plugin
 RUN helm plugin install https://github.com/jkroepke/helm-secrets

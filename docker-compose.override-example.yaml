@@ -1,0 +1,11 @@
+services:
+  devops:
+    build:
+      context: .
+    tty: true
+    stdin_open: true
+    volumes:
+      - ~/.config/gcloud:/root/.config/gcloud
+      - ~/projects/plusplus/askalon-staging-infrastructure:/staging
+      - ~/projects/plusplus/askalon-production-infrastructure:/production
+      - ~/projects/navy-blue:/navy-blue
